@@ -1,4 +1,4 @@
-# scikit_build_example
+# pybind-mpi_build_example
 
 [![Gitter][gitter-badge]][gitter-link]
 
@@ -8,8 +8,11 @@
 | pip builds           | [![Pip Actions Status][actions-pip-badge]][actions-pip-link] |
 
 
-An example project built with [pybind11][] and [scikit-build-core][]. Python
-3.7+ (see older commits for older versions of Python using [scikit-build (classic)][]).
+An example MPI project built with [pybind11][] and [scikit-build-core][]. Python
+3.7+. In this repository, we demonstrate how to expose a Python interface to an MPI-parallel program using pybind11 and scikit-build. This strategy is helpful on such [cases](https://enccs.se/news/2021/03/mpi-hybrid-c-python-code/):
+
+- You have a C++ MPI-parallel library and you would like to provide a Python interface to it.
+- You have an MPI-parallel Python program and you want to rewrite some core functionality in C++ for performance reasons.
 
 
 [gitter-badge]:            https://badges.gitter.im/pybind/Lobby.svg
@@ -22,17 +25,39 @@ An example project built with [pybind11][] and [scikit-build-core][]. Python
 [actions-wheels-link]:     https://github.com/pybind/scikit_build_example/actions?query=workflow%3AWheels
 [actions-wheels-badge]:    https://github.com/pybind/scikit_build_example/workflows/Wheels/badge.svg
 
+
 ## Installation
 
-- Clone this repository
-- `pip install ./scikit_build_example`
+### MPI SetUp
+
+Provide an example on the Ubuntu.
+
+```shell
+sudo apt-get update && sudo apt-get upgrade
+sudo apt-get install openmpi-bin openmpi-common libopenmpi-dev libgtk2.0-dev
+# sudo apt-get install -f 
+```
+
+### Pybind SetUp
+- `conda create -n pybd python=3.8`
+- `conda activate pybd`
+- `pip install pybind11 mpi4py`
+- `git clone https://github.com/jieli-matrix/pybind-mpi.git`
+- `cd pybind-mpi && pip install -v .`
 
 ## Test call
 
-```python
-import scikit_build_example
+```
+mpirun -n 8 --allow-run-as-root python tests/test_basic.py
 
-scikit_build_example.add(1, 2)
+Hello world from rank 4 of 8
+Hello world from rank 0 of 8
+Hello world from rank 1 of 8
+Hello world from rank 5 of 8
+Hello world from rank 6 of 8
+Hello world from rank 7 of 8
+Hello world from rank 2 of 8
+Hello world from rank 3 of 8
 ```
 
 ## Files
